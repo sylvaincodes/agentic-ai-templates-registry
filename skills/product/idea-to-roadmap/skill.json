@@ -1,5 +1,6 @@
 {
   "id": "product/idea-to-roadmap",
+  "type": "skill",
   "name": "Idea to Roadmap",
   "version": "1.0.0",
   "description": "Transforms vague ideas into structured execution plans and roadmaps.",
