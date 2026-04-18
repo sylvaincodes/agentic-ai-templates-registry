@@ -1,0 +1,16 @@
+{
+  "test_cases": [
+    {
+      "input": "I want to build a SaaS for creators",
+      "must_include": ["clarification questions", "MVP definition", "roadmap"]
+    },
+    {
+      "input": "AI tool for productivity",
+      "must_include": [
+        "problem definition",
+        "refined concept",
+        "execution plan"
+      ]
+    }
+  ]
+}
