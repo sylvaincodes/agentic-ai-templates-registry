@@ -47,60 +47,36 @@
       "output_format": "1. Hero Headline\n2. Sub-headline\n3. Benefit Bullets\n4. Primary CTA"
     }
   ],
-  "steps": [
-    {
-      "id": "define-project",
-      "order": 1,
-      "title": "Define Your Value Proposition",
-      "objective": "Identify target audience and craft a compelling headline.",
-      "instructions": "Describe your startup idea and who it is for.",
+  "agents": {
+    "strategist": {
+      "role": "Lead Product Strategist",
       "skill_id": "product/idea-to-roadmap",
-      "skill_name": "Idea to Roadmap",
-      "estimated_time": "10min"
+      "instruction": "You are responsible for market fit. Your output must be a validated strategy file."
     },
-    {
-      "id": "write-copy",
-      "order": 2,
-      "title": "Write Conversion-Focused Copy",
-      "objective": "Generate persuasive copy for hero and CTA sections.",
-      "instructions": "Refine the value prop from Step 1 into a marketing message.",
+    "copywriter": {
+      "role": "Conversion Copywriter",
       "skill_id": "marketing/copywriting",
-      "skill_name": "Copywriting",
-      "estimated_time": "10min"
+      "instruction": "You translate business goals into PAS-framework copy. Your output must be high-conversion marketing text."
     },
-    {
-      "id": "step-3",
-      "order": 3,
-      "title": "Build the Landing Page Structure",
-      "description": "Create the page layout with responsive components. AI will generate clean, accessible code following best practices.",
+    "engineer": {
+      "role": "Full-stack Developer",
       "skill_id": "development/component-builder",
-      "skill_name": "Component Builder",
-      "estimated_time": "10min"
-    },
-    {
-      "id": "step-4",
-      "order": 4,
-      "title": "Implement Email Collection",
-      "description": "Set up the email form with client and server validation, plus integration with your preferred email service.",
-      "skill_id": "development/form-builder",
-      "skill_name": "Form Builder",
-      "estimated_time": "10min"
+      "instruction": "You build clean, accessible Next.js components based on provided copy."
     }
-  ],
+  },
   "commands": {
     "launch": {
       "id": "launch-landing-page",
       "type": "command",
       "trigger": "/launch-landing-page",
-      "description": "Executes the full landing page build from A to Z using installed skills.",
+      "description": "Executes the full landing page build from A to Z using agents.",
       "parameters": ["project_name", "target_audience"],
       "orchestration": [
-        "1. Initialize context using ONLY these skills: .claude/skills/product/idea-to-roadmap and .claude/skills/marketing/copywriting. Ignore all other skill modules in the .claude/skills directory to prevent persona conflict.",
-        "2. Execute STEP-1: Use 'product/idea-to-roadmap' to define the Value Prop based on {{project_name}}",
-        "3. Execute STEP-2: Use 'marketing/copywriting' to generate copy specifically for {{target_audience}}",
-        "4. Execute STEP-3: Scaffold the React components using Next.js and Tailwind CSS",
-        "5. Execute STEP-4: Implement the email capture form with validation",
-        "6. RUN a final 'Conversion Audit' to ensure the output matches the strategy"
+        "[INITIALIZE] Load @strategist and @copywriter agents. Isolate their context from other local skills.",
+        "[DELEGATE] Assign @strategist to define the Value Prop for '{{project_name}}'. Output to .agentic/strategy.md.",
+        "[DELEGATE] Assign @copywriter to read .agentic/strategy.md and write the landing page content for '{{target_audience}}'. Output to .agentic/copy.md.",
+        "[DELEGATE] Assign @engineer to scaffold the Next.js site using the copy in .agentic/copy.md. Ensure 100% tsc pass.",
+        "[AUDIT] Lead a collaborative review between @copywriter and @engineer to ensure the final UI matches the conversion strategy."
       ],
       "checklist": [
         "Value proposition defined",
