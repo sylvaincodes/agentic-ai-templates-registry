@@ -72,11 +72,13 @@
       "description": "Executes the full landing page build from A to Z using agents.",
       "parameters": ["project_name", "target_audience"],
       "orchestration": [
-        "[INITIALIZE] Load @strategist and @copywriter agents. Isolate their context from other local skills.",
-        "[DELEGATE] Assign @strategist to define the Value Prop for '{{project_name}}'. Output to .agentic/strategy.md.",
-        "[DELEGATE] Assign @copywriter to read .agentic/strategy.md and write the landing page content for '{{target_audience}}'. Output to .agentic/copy.md.",
-        "[DELEGATE] Assign @engineer to scaffold the Next.js site using the copy in .agentic/copy.md. Ensure 100% tsc pass.",
-        "[AUDIT] Lead a collaborative review between @copywriter and @engineer to ensure the final UI matches the conversion strategy."
+        "[SETUP] Use a filesystem tool to create the 'output' directory if it does not exist.",
+        "[INITIALIZE] Use a 'read_file' tool on the strategist persona file located in your local agent config to adopt the @strategist persona.",
+        "[DELEGATE] As @strategist, analyze '{{project_name}}' and use a 'write_file' tool to save the strategy to 'output/strategy.md'.",
+        "[INITIALIZE] Use a 'read_file' tool on the copywriter persona file in your local agent config to switch to the @copywriter persona.",
+        "[DELEGATE] Use a 'read_file' tool on 'output/strategy.md', then use a 'write_file' tool to save high-conversion copy for '{{target_audience}}' to 'output/copy.md'.",
+        "[DELEGATE] Use a 'write_file' tool to scaffold the landing page 'app/page.tsx' using the content from 'output/copy.md'.",
+        "[AUDIT] Read 'app/page.tsx' and the original 'output/strategy.md'. Reflect in a Thought block on whether the implementation matches the strategy."
       ],
       "checklist": [
         "Value proposition defined",
